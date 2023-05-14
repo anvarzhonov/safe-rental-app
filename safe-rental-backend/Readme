@@ -1,0 +1,7 @@
+### For starting microservices put this command:
+    docker-compose up -d
+or if you want build the Docker containers each time on startup from the directories put this:
+    docker-compose up -d --build
+
+
+docker run -p 8761:8761 --name eureka-server safe-rental-backend/eureka-server:0.0.1-SNAPSHOT
