@@ -1,0 +1,1 @@
+INSERT INTO public.roles (id, name) VALUES (DEFAULT, 'ROLE_USER')
