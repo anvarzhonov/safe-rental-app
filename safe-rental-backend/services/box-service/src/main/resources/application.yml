@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: box-service
+  jpa:
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5435/safe_rental_db
+    username: anvarzhonov
+    password: anvarzhonov
+
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${DISCOVERY_URL:http://localhost:8761/eureka}
+
+server:
+  port: ${SERVER_PORT:9091}

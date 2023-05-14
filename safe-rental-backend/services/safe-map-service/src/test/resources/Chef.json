@@ -1,0 +1,17 @@
+{
+  "chefs": [
+    {
+      "type2": "antonio",
+      "name3": "Antonio",
+      "food4": "Food antonio",
+      "specAntonio": "spec 1"
+    },
+    {
+      "type": "marco",
+      "name": "Marco",
+      "food": "Food Marco",
+      "specMarco2": "spec Marco"
+    }
+  ],
+  "lotation": 25
+}

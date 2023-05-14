@@ -1,0 +1,16 @@
+{
+  "$id": "message.schema.json",
+  "type": "object",
+  "properties": {
+    "trace_id": {
+      "type": "string"
+    },
+    "offer": {
+      "$ref": "offer.schema.json"
+    }
+  },
+  "required": [
+    "trace_id",
+    "offer"
+  ]
+}
