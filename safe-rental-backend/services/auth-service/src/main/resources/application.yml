@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: auth-service
+  jpa:
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5435/safe_rental_db
+
+eureka:
+  client:
+    enabled: true
+    serviceUrl:
+      defaultZone: ${DISCOVERY_URL:http://localhost:8761/eureka}
+
+services:
+  user-service:
+    url: ${USER_SERVICE_URL:http://localhost:9095}
+
+jwt:
+  secret: BvPHGM8C0ia4uOuxxqPD5DTbWC9F9TWvPStp3pb7ARo0oK2mJ3pd3YG4lxA9i8bj6OTbadwezxgeEByY
+  expiration-in-ms: 7200000
+
+server:
+  port: ${SERVER_PORT:9090}
