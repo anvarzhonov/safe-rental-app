@@ -1,0 +1,184 @@
+version: "3.9"
+services:
+  eureka-server:
+    image: safe-rental-app/eureka-server:${buildNumber}
+    build: ./eureka-server
+    ports:
+      - "8761:8761"
+    networks:
+      - safe-app
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+
+  api-gateway:
+    image: safe-rental-app/api-gateway:${buildNumber}
+    build: ./api-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      DISCOVERY_URL: http://eureka-server:8761/eureka/
+    depends_on:
+      eureka-server:
+        condition: service_started
+    restart: always
+    networks:
+      - safe-app
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+
+  auth-service:
+    image: safe-rental-app/auth-service:${buildNumber}
+    build: ./services/auth-service
+    ports:
+      - "9090:8080"
+    environment:
+      DISCOVERY_URL: http://eureka-server:8761/eureka/
+      SERVER_PORT: 8080
+      USER_SERVICE_URL: http://user-service:8080
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/safe_rental_db
+      SPRING_DATASOURCE_USERNAME: anvarzhonov
+      SPRING_DATASOURCE_PASSWORD: anvarzhonov
+    depends_on:
+      eureka-server:
+        condition: service_started
+      db:
+        condition: service_started
+    restart: always
+    networks:
+      - safe-app
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9090/actuator/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+
+  box-service:
+    image: safe-rental-app/box-service:${buildNumber}
+    build: ./services/box-service
+    ports:
+      - "9091:8080"
+    environment:
+      SERVER_PORT: 8080
+      DISCOVERY_URL: http://eureka-server:8761/eureka/
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/safe_rental_db
+      SPRING_DATASOURCE_USERNAME: anvarzhonov
+      SPRING_DATASOURCE_PASSWORD: anvarzhonov
+    restart: always
+    depends_on:
+      eureka-server:
+        condition: service_started
+      db:
+        condition: service_started
+    networks:
+      - safe-app
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+
+  calculations-service:
+    image: safe-rental-app/calculations-service:${buildNumber}
+    build: ./services/calculations-service
+    ports:
+      - "9093:8080"
+    environment:
+      SERVER_PORT: 8080
+      DISCOVERY_URL: http://eureka-server:8761/eureka/
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/safe_rental_db
+      SPRING_DATASOURCE_USERNAME: anvarzhonov
+      SPRING_DATASOURCE_PASSWORD: anvarzhonov
+    restart: always
+    depends_on:
+      eureka-server:
+        condition: service_started
+      db:
+        condition: service_started
+    networks:
+      - safe-app
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9093/actuator/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+
+  safe-map-service:
+    image: safe-rental-app/safe-map-service:${buildNumber}
+    build: ./services/safe-map-service
+    ports:
+      - "9094:8080"
+    environment:
+      SERVER_PORT: 8080
+      DISCOVERY_URL: http://eureka-server:8761/eureka/
+      BOX_SERVICE_URL: http://box-service:8080
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/safe_rental_db
+      SPRING_DATASOURCE_USERNAME: anvarzhonov
+      SPRING_DATASOURCE_PASSWORD: anvarzhonov
+    restart: always
+    depends_on:
+      eureka-server:
+        condition: service_started
+      db:
+        condition: service_started
+    networks:
+      - safe-app
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9094/actuator/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+
+  user-service:
+    image: safe-rental-app/user-service:${buildNumber}
+    build: ./services/user-service
+    ports:
+      - "9095:8080"
+    environment:
+      SERVER_PORT: 8080
+      DISCOVERY_URL: http://eureka-server:8761/eureka/
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/safe_rental_db
+      SPRING_DATASOURCE_USERNAME: anvarzhonov
+      SPRING_DATASOURCE_PASSWORD: anvarzhonov
+    restart: always
+    depends_on:
+      eureka-server:
+        condition: service_started
+      db:
+        condition: service_started
+    networks:
+      - safe-app
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9095/actuator/health" ]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+
+  db:
+    image: postgres
+    restart: always
+    volumes:
+    - ./data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: anvarzhonov
+      POSTGRES_USER: anvarzhonov
+      POSTGRES_DB: safe_rental_db
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+    - "5435:5432"
+    networks:
+      - safe-app
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+    - "9999:8080"
+
+networks:
+  safe-app:
