@@ -13,6 +13,7 @@ public class GatewayConfig {
     @Bean
     public RouteLocator routes(RouteLocatorBuilder builder) {
         return builder.routes()
+
                 .route("auth-service", r -> r.path("/auth/**")
                         .uri("lb://auth-service"))
 
@@ -21,13 +22,12 @@ public class GatewayConfig {
                         .uri("lb://user-service"))
 
                 .route("safe-map-service", r -> r.path("/map/**")
-                        .filters(f -> f.filter(filter))
                         .uri("lb://safe-map-service"))
 
                 .route("calculations-service", r -> r.path("/calc/**")
-                        .filters(f -> f.filter(filter))
                         .uri("lb://calculations-service"))
 
                 .build();
     }
+
 }

@@ -1,12 +1,17 @@
 package ru.anvarzhonov.sbrf.map.dto;
 
-import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.experimental.SuperBuilder;
+import ru.anvarzhonov.sbrf.base.rest.BaseApiResponse;
 
 import java.util.List;
 
-@Builder
+@SuperBuilder
 @Getter
-public class SearchAvailableSafesRs {
+@ToString
+@Setter
+public class SearchAvailableSafesRs extends BaseApiResponse {
     private List<OfficeDto> offices;
 }
