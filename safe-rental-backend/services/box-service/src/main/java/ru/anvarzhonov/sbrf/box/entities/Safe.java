@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import ru.anvarzhonov.sbrf.base.ObjectId;
+import ru.anvarzhonov.sbrf.box.dto.SafeStatus;
 
 @Entity
 @Table(name = "safes")
@@ -21,11 +22,5 @@ public class Safe extends ObjectId {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private Status status;
-
-    enum Status {
-        FREE,
-        RESERVED,
-        RENTED
-    }
+    private SafeStatus status;
 }
