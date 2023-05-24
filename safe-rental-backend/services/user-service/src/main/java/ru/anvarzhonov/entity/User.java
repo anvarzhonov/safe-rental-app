@@ -2,6 +2,7 @@ package ru.anvarzhonov.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import ru.anvarzhonov.entity.client.Client;
 import ru.anvarzhonov.sbrf.base.ObjectId;
 
 import java.util.Set;
@@ -24,4 +25,8 @@ public class User extends ObjectId {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private Client client;
 }
