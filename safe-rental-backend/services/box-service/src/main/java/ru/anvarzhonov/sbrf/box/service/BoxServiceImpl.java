@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.anvarzhonov.sbrf.base.BusinessException;
+import ru.anvarzhonov.sbrf.box.dto.SafeDto;
 import ru.anvarzhonov.sbrf.box.dto.SafeStatus;
 import ru.anvarzhonov.sbrf.box.dto.SafesWithOfficeIdDto;
 import ru.anvarzhonov.sbrf.box.entities.Safe;
@@ -31,14 +32,24 @@ public class BoxServiceImpl implements BoxService {
 
     @Override
     public void updateStatus(Long safeId, SafeStatus status) {
-        Safe safe = boxRepository.findById(safeId).orElseThrow(() -> {
-            String errMessage = "Safe с id - (%s) не найден.";
-            throw new BusinessException(String.format(errMessage, safeId));
-        });
+        Safe safe = findByIdOrElseThrowException(safeId);
         SafeStatus currentStatus = safe.getStatus();
         safe.setStatus(status);
 
         boxRepository.save(safe);
         log.info("Изменился статус у сейфа с id - ({}) c - ({}) на ({})", safeId, currentStatus, status);
+    }
+
+    @Override
+    public SafeDto getSafeInfo(Long safeId) {
+        Safe safe = findByIdOrElseThrowException(safeId);
+        return mapper.safeEntityToSafeDto(safe);
+    }
+
+    private Safe findByIdOrElseThrowException(Long safeId) {
+        return boxRepository.findById(safeId).orElseThrow(() -> {
+            String errMessage = "Safe с id - (%s) не найден.";
+            throw new BusinessException(String.format(errMessage, safeId));
+        });
     }
 }

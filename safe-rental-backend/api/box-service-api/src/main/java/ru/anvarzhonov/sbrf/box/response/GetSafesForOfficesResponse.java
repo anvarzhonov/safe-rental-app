@@ -7,12 +7,11 @@ import lombok.NoArgsConstructor;
 import ru.anvarzhonov.sbrf.box.dto.SafesWithOfficeIdDto;
 
 import java.io.Serializable;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class GetSafesForOfficesRs implements Serializable {
+public class GetSafesForOfficesResponse implements Serializable {
     SafesWithOfficeIdDto data;
 }

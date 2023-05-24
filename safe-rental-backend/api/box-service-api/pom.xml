@@ -14,5 +14,10 @@
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>ru.anvarzhonov</groupId>
+            <artifactId>base-api</artifactId>
+        </dependency>
+    </dependencies>
 </project>

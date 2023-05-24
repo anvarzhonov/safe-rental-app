@@ -1,6 +1,7 @@
 package ru.anvarzhonov.sbrf.base;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -11,7 +12,8 @@ import java.io.Serializable;
 @Getter
 @Setter
 @ToString
-public class ObjectId  implements Serializable {
+@EqualsAndHashCode
+public class ObjectId implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

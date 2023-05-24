@@ -1,5 +1,6 @@
 package ru.anvarzhonov.sbrf.box.service;
 
+import ru.anvarzhonov.sbrf.box.dto.SafeDto;
 import ru.anvarzhonov.sbrf.box.dto.SafeStatus;
 import ru.anvarzhonov.sbrf.box.dto.SafesWithOfficeIdDto;
 
@@ -9,4 +10,6 @@ import ru.anvarzhonov.sbrf.box.dto.SafesWithOfficeIdDto;
 public interface BoxService {
     SafesWithOfficeIdDto getSafesForOfficeId(Long officeId);
     void updateStatus(Long safeId, SafeStatus status);
+
+    SafeDto getSafeInfo(Long safeId);
 }

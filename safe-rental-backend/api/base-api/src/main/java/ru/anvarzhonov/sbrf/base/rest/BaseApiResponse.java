@@ -7,7 +7,6 @@ import java.io.Serializable;
 
 @Data
 @SuperBuilder
-
 public class BaseApiResponse implements Serializable {
 //    @JsonUnwrapped
     private Status status;
