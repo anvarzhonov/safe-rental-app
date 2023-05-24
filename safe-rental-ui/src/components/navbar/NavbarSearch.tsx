@@ -9,7 +9,7 @@ const NavbarSearch = () => {
 		<div
 			className='
             border-[1px]
-            w-full 
+            w-full
             md:w-auto
             py-2 
             rounded-full 
@@ -20,12 +20,16 @@ const NavbarSearch = () => {
 		>
 			<div className='flex flex-row items-center justify-between'>
 				<div className='text-sm font-semibold px-6 cursor-pointer'>Тарифы</div>
-				<div className='hidden sm:block text-sm font-semibold px-6 border-x-[1px] flex-1 text-center cursor-pointer'>
+				<div
+					onClick={() => router.push('/rental-calc')}
+					className='hidden sm:block text-sm font-semibold px-6 border-x-[1px] flex-1 text-center cursor-pointer'
+				>
 					Расчет стоимости
 				</div>
 				<div
-                    onClick={() => router.push('/map')} 
-                    className='text-sm pl-6 pr-2 text-gray-600 flex flex-row items-center gap-3 cursor-pointer'>
+					onClick={() => router.push('/map')}
+					className='text-sm pl-6 pr-2 text-gray-600 flex flex-row items-center gap-3 cursor-pointer'
+				>
 					<div className='hidden sm:block'>Свободные сейфы</div>
 					<div className='p-2 bg-green-500 rounded-full text-white'>
 						<BiSearch />
