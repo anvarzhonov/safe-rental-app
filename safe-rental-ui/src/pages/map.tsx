@@ -1,4 +1,4 @@
-import SearchMap from '@/components/screens/map/SearchMap'
+import SearchMap from '@/screens/map/SearchMap'
 
 const Map = () => {
 	return (

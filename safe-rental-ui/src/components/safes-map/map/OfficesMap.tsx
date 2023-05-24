@@ -1,5 +1,7 @@
+'use client'
+
 import { Map, YMaps } from '@pbe/react-yandex-maps'
-import { MutableRefObject } from 'react'
+import { FC, MutableRefObject } from 'react'
 import { Coordinate, OfficeWithoutSafes } from '../../../types/map-search.type'
 import SafePlacemark from './SafePlacemark'
 
@@ -11,17 +13,16 @@ import SafePlacemark from './SafePlacemark'
 // 	setMapCenter(center)
 // }
 
-type Props = {
+type OfficeMapProps = {
 	officeInfos: OfficeWithoutSafes[]
 	mapCenter?: Coordinate
 	mapRef: MutableRefObject<ymaps.Map | undefined>
 }
 
-const myCenter = [55.95643, 37.6824372]
 
 const mapCenter = [55.74125527661501, 37.53093449867246]
 
-const OfficesMap = ({ officeInfos, mapRef }: Props) => {
+const OfficesMap: FC<OfficeMapProps> = ({ officeInfos, mapRef }) => {
 	return (
 		<>
 			<YMaps
@@ -43,8 +44,8 @@ const OfficesMap = ({ officeInfos, mapRef }: Props) => {
 					instanceRef={mapRef}
 				>
 					{/* <GeolocationControl options={{ float: 'right' }} /> */}
-					{officeInfos.map(office => (
-						<SafePlacemark office={office} />
+					{officeInfos.map((office) => (
+						<SafePlacemark key = {office.id} office={office} />
 					))}
 				</Map>
 			</YMaps>

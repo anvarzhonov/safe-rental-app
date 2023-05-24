@@ -1,9 +1,9 @@
 import { Office } from '@/types/map-search.type'
 import { TextField } from '@mui/material'
-import { ChangeEvent } from 'react'
+import { ChangeEvent, FC } from 'react'
 import OfficeList from './OfficeList'
 
-type Props = {
+type OfficesFilterProps = {
 	error: boolean
 	offices: Office[]
 	filteredOffices: Office[]
@@ -11,14 +11,13 @@ type Props = {
 	handleSelectedOffice: (office: Office) => void | undefined
 }
 
-const OfficesFilter
- = ({
+const OfficesFilter: FC<OfficesFilterProps>	= ({
 	error,
 	offices,
 	filteredOffices,
 	onFilterChange,
-	handleSelectedOffice,
-}: Props) => {
+	handleSelectedOffice}) => {
+		
 	const handleTextInputChange = (event: ChangeEvent<HTMLInputElement>) => {
 		const { value } = event.target
 

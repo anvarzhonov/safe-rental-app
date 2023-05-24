@@ -5,7 +5,7 @@ export interface IOffices {
 export interface Office {
     id: number,
 	address: string
-	openAt: string
+	openAt?: string
 	coordinate: Coordinate
 	safes: Safe[]
 }
@@ -13,8 +13,8 @@ export interface Office {
 export interface OfficeWithoutSafes extends Omit<Office, 'safes'> {}
 
 export interface Coordinate {
-	latitude: number
-	longitude: number
+	latitudeCoordinate: number
+	longitudeCoordinate: number
 }
 
 export interface Safe {
