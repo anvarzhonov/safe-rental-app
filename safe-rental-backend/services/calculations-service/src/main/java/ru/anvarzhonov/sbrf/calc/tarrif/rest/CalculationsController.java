@@ -15,7 +15,7 @@ import java.util.List;
 public class CalculationsController {
     private final TariffService service;
     @GetMapping("/getTariffs")
-    public GetTariffResponse getTariffs() {
+    public GetTariffResponse getAllTariffs() {
         List<Tariff> tariffs = service.geTariffs();
         return GetTariffResponse
                 .builder()

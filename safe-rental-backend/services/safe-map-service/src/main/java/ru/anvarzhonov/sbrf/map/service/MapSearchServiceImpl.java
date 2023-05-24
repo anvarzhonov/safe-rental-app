@@ -6,7 +6,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import ru.anvarzhonov.sbrf.box.request.GetSafesForOfficesRq;
-import ru.anvarzhonov.sbrf.box.response.GetSafesForOfficesRs;
+import ru.anvarzhonov.sbrf.box.response.GetSafesForOfficesResponse;
 import ru.anvarzhonov.sbrf.map.dto.OfficeDto;
 import ru.anvarzhonov.sbrf.map.entities.OfficeBranch;
 import ru.anvarzhonov.sbrf.map.mapper.OfficeBranchMapper;
@@ -37,7 +37,7 @@ public class MapSearchServiceImpl implements MapSearchService {
                             .build();
                     var response = restTemplate.postForObject(BOX_PATH + "/box/getSafesForOffices",
                             request,
-                            GetSafesForOfficesRs.class);
+                            GetSafesForOfficesResponse.class);
 
                     office.setSafes(response.getData().getSafes());
                 });

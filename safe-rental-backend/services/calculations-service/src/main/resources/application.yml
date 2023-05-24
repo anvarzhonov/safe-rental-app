@@ -6,7 +6,7 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5435/safe_rental_db

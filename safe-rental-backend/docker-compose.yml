@@ -162,8 +162,6 @@ services:
   db:
     image: postgres
     restart: always
-    volumes:
-    - ./data:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: anvarzhonov
       POSTGRES_USER: anvarzhonov
