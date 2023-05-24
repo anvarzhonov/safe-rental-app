@@ -18,6 +18,8 @@
         <module>box-service</module>
         <module>auth-service</module>
         <module>user-service</module>
+        <module>agreement-service</module>
+        <module>client-info-service</module>
     </modules>
 
     <properties>
@@ -25,6 +27,12 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>ru.anvarzhonov</groupId>
+            <artifactId>base-api</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
