@@ -37,7 +37,7 @@ public class BoxServiceImpl implements BoxService {
 
     private <T extends BaseApiResponse> void checkStatus(T response) {
         if (response.getStatus().equals(BaseApiResponse.Status.ERROR)) {
-            throw new BusinessException("Произошла ошибка во время создания договора. Ошибка: "
+            throw new BusinessException("Ошибка при получении информации по сейфу. Ошибка: "
                     + response.getErrMessage());
         }
     }

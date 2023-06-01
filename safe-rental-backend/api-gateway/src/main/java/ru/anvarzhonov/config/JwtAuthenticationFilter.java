@@ -25,11 +25,14 @@ public class JwtAuthenticationFilter implements GatewayFilter {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         ServerHttpRequest request = exchange.getRequest();
-        log.info("api gateway request: --> r: {}", request);
+        log.info("api gateway request: --> id: {} path: {}, body: {}",
+                request.getId(), request.getURI(), request.getBody());
+
         if (isAuthMissing(request)) {
             log.error("Authorization header is invalid");
             return onError(exchange, "Authorization header is missing");
         }
+
         String token = getAuthHeader(request);
 
         try {
@@ -64,8 +67,8 @@ public class JwtAuthenticationFilter implements GatewayFilter {
         Claims claims = jwtUtil.getAllClaimsFromToken(token);
         String username = claims.getSubject();
         exchange.getRequest()
-                    .mutate()
-                        .header("username", username)
-                    .build();
+                .mutate()
+                .header("username", username)
+                .build();
     }
 }

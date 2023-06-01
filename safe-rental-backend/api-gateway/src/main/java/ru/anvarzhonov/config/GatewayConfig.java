@@ -27,6 +27,10 @@ public class GatewayConfig {
                 .route("calculations-service", r -> r.path("/calc/**")
                         .uri("lb://calculations-service"))
 
+                .route("agreement-service", r -> r.path("/agreement/**")
+                        .filters(f -> f.filter(filter))
+                        .uri("lb://agreement-service"))
+
                 .build();
     }
 

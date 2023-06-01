@@ -3,17 +3,22 @@ package ru.anvarzhonov.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.anvarzhonov.controller.dto.AgreementDetails;
+import ru.anvarzhonov.controller.dto.AgreementInfoDto;
 import ru.anvarzhonov.entity.Agreement;
 import ru.anvarzhonov.mapper.AgreementMapper;
 import ru.anvarzhonov.repository.AgreementRepository;
 import ru.anvarzhonov.sbrf.base.BusinessException;
+import ru.anvarzhonov.sbrf.box.dto.SafeDto;
+import ru.anvarzhonov.service.box.BoxService;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class AgreementServiceImpl implements AgreementService {
     private final AgreementMapper mapper;
+    private final BoxService boxService;
     private final AgreementRepository repository;
 
     @Override
@@ -24,7 +29,7 @@ public class AgreementServiceImpl implements AgreementService {
         String agreementNumber = createAgreementNumber(username, agreement.getSafeId(), now);
 
         if (repository.findByAgreementNumber(agreementNumber).isPresent()) {
-          throw new BusinessException("Номер договора (" + agreementNumber + ") уже существует");
+            throw new BusinessException("Номер договора (" + agreementNumber + ") уже существует");
         }
 
         Agreement finalAgreement = agreement.toBuilder()
@@ -35,6 +40,21 @@ public class AgreementServiceImpl implements AgreementService {
 
         Agreement saved = repository.save(finalAgreement);
         return saved.getAgreementNumber();
+    }
+
+    @Override
+    public List<AgreementInfoDto> getAgreements(String username) {
+        List<Agreement> agreements = repository.findByUsername(username);
+        if (agreements.isEmpty()) {
+            throw new BusinessException("По пользователю " + username + " не найдены договоры");
+        }
+
+        return agreements.stream()
+                .map(agreement -> {
+                    SafeDto safeDto = boxService.executeGetSafeInfoById(agreement.getSafeId());
+                    return mapper.agreementInfoToAgreementDto(agreement, safeDto.size());
+                })
+                .toList();
     }
 
     // Agreement number example: mirzoev.3.24-03-2022

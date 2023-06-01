@@ -1,6 +1,9 @@
 package ru.anvarzhonov.service;
 
 import ru.anvarzhonov.controller.dto.AgreementDetails;
+import ru.anvarzhonov.controller.dto.AgreementInfoDto;
+
+import java.util.List;
 
 public interface AgreementService {
     /**
@@ -10,4 +13,12 @@ public interface AgreementService {
      * @return сохраненный номер договора
      */
     String createAgreement(String username, AgreementDetails agreementDetails);
+
+    /**
+     * Получение договоров по имени пользователя
+     *
+     * @param username имя пользователя
+     * @return
+     */
+    List<AgreementInfoDto> getAgreements(String username);
 }

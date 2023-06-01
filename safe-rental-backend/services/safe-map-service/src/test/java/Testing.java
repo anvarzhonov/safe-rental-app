@@ -3,6 +3,7 @@ import org.junit.jupiter.api.Test;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,6 +12,15 @@ import java.util.List;
 
 public class Testing {
 
+    @Test
+    void tijme1() {
+        var time = (int) ZonedDateTime.now().toInstant().toEpochMilli();
+        long l = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+        long time1 = new Date().getTime();
+        System.out.println(time);
+        System.out.println(l);
+        System.out.println(time1);
+    }
     @Test
     void test1() {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd:MM:uuuu HH:mm:ss");
