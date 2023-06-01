@@ -1,9 +1,10 @@
 import axios, { AxiosResponse } from 'axios';
 import { toast } from 'react-hot-toast';
+import { getUserToken } from '../auth.service';
 
 interface Params {
   baseUrl: string;
-  headers: any;
+  headers?: { [key: string]: string };
 }
 
 const commonConfig: Params = {
@@ -19,6 +20,18 @@ interface ApiResponse<T> {
   data?: T;
   errMessage?: string;
 }
+
+const getCommonConfig = (requiresAuth: boolean, token?: string): Params => {
+  const headers = {
+    'Content-type': 'application/json',
+    ...(requiresAuth && token && { Authorization: token }),
+  };
+
+  return {
+    baseUrl: 'http://localhost:8080',
+    headers,
+  };
+};
 
 export const postAPI = async <T>(url: string, data: any): Promise<T> => {
   //   return await axios
@@ -43,24 +56,46 @@ export const postAPI = async <T>(url: string, data: any): Promise<T> => {
       data,
       commonConfig
     );
-	console.log(response);
+    console.log(response);
     return response.data;
   } catch (error: any) {
+    console.log(error);
+    const response = error.response;
+
+    console.log(
+      'status: ' +
+        response?.status +
+        ' error body: ' +
+        JSON.stringify(response?.data)
+    );
+    if (response?.status > 500) {
+      toast.error("Сервис не доступен.")
+    }
     toast.error(error.response.data.errMessage);
-    console.error(error);
     throw error;
   }
 };
 
 export const getAPI = async <T>(
   url: string,
-  data?: any
+  requiresAuth = false
 ): Promise<ApiResponse<T>> => {
+  const authToken = getUserToken();
+
+  if (requiresAuth && !authToken) {
+    toast.error('Требуется авторизация, чтобы получить доступ к странице');
+    return {
+      status: 401, // Unauthorized
+      errMessage: 'Please log in to access this resource.',
+    };
+  }
+
+  const config: Params = getCommonConfig(requiresAuth, authToken || undefined);
+
   return await axios
-    .get<T>(`${commonConfig.baseUrl}/${url}`, commonConfig)
+    .get<T>(`${config.baseUrl}/${url}`, config)
 
     .then((response) => {
-    //   console.log(response);
       return {
         status: response.status,
         data: response.data,
@@ -68,10 +103,18 @@ export const getAPI = async <T>(
     })
     .catch((error) => {
       console.log(error);
+      const response = error.response;
+
+      console.log(
+        'status: ' +
+          response?.status +
+          ' error body: ' +
+          JSON.stringify(response?.data)
+      );
       // alert(error)
       return {
         status: error.status || 500,
-        data: error.response,
+        errMessage: response?.data,
       };
     });
 };

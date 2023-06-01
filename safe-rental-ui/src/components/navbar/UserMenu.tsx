@@ -20,20 +20,38 @@ const UserMenu = () => {
   }, []);
 
   const toggleLogOut = () => {
-    signOut()
+    signOut();
+    router.push('/');
     router.reload();
   };
 
   return (
     <div className='relative'>
       <div className='flex flex-row items-center gap-3'>
-        <div
-          onClick={toggleOpen}
-          className='hidden cursor-pointer rounded-full px-4 py-3 text-sm font-semibold transition hover:bg-neutral-100 md:block'
+        {currentUser && (
+          <div
+            onClick={() => router.push('/profile')}
+            className='
+                        hidden cursor-pointer 
+                        rounded-full px-4 py-3 
+                        text-sm font-semibold 
+                        transition hover:bg-neutral-100 
+                        md:block'
+          >
+            Личный кабинет
+          </div>
+        )}
+        {/* <div
+          onClick={() => router.push('/profile')}
+          className='
+                        hidden cursor-pointer 
+                         px-4 py-3 
+                        text-sm font-semibold 
+                        transition hover:bg-neutral-100 
+                        md:block'
         >
-            {currentUser && (<>32</>)}
-          Личный кабинет
-        </div>
+          
+        </div> */}
         <div
           onClick={toggleOpen}
           className='flex cursor-pointer flex-row items-center gap-3 rounded-full border-[1px] border-neutral-200 p-4 hover:shadow-md md:px-2 md:py-1'
@@ -45,20 +63,20 @@ const UserMenu = () => {
         </div>
       </div>
       {isOpen && (
-        <div className='absolute right-0 top-12 w-[30vw] overflow-hidden rounded-xl bg-white text-sm shadow-md md:w-3/4'>
+        <div className='absolute right-0 top-12 min-w-full overflow-hidden rounded-xl bg-white text-sm shadow-md '>
           <div className='flex cursor-pointer flex-col'>
             {currentUser ? (
               <>
                 <MenuItem
-                  label='My trips'
+                  label='Мои бронирования'
                   onClick={() => router.push('/trips')}
                 />
-                <MenuItem label='Logout' onClick={toggleLogOut} />
+                <MenuItem label='Выйти' onClick={toggleLogOut} />
               </>
             ) : (
               <>
-                <MenuItem onClick={loginModal.onOpen} label='Login' />
-                <MenuItem onClick={registerModal.onOpen} label='Sign in' />
+                <MenuItem onClick={loginModal.onOpen} label='Войти в аккаунт' />
+                <MenuItem onClick={registerModal.onOpen} label='Зарегистрироваться' />
               </>
             )}
           </div>

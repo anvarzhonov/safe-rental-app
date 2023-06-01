@@ -9,6 +9,7 @@ import {
   formatExpirationDate,
   formatFormData,
 } from '../../utils/payment-utils';
+import { useRouter } from 'next/router';
 
 interface ReactCreditCardsProps {
   cvc: string | number;
@@ -63,12 +64,17 @@ const PaymentForm = () => {
     setState((prev) => ({ ...prev, focused: evt.target.name }));
   };
 
+  const router = useRouter();
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = formRef.current;
     if (!form) {
       return;
     }
+
+    router.push("/profile");
+    
     const formData = Array.from(form.elements)
       .filter((el: Element): el is HTMLInputElement => el.tagName === 'INPUT')
       .reduce((acc: any, el: any) => {

@@ -8,28 +8,32 @@ type Props = {};
 const data = [
   {
     id: 1,
-    sizeType: 'xs',
+    sizeType: 'Маленький',
+    size: 'XS',
     name: 'Item 1',
     info: 'Подходит для хранения небольших предметов, документов, ключей, ювелирных украшений без футляров.',
     pricePerDay: 150,
   },
   {
     id: 2,
-    sizeType: 's',
+    sizeType: 'Средний',
+    size: 'S',
     name: 'Item 2',
     info: 'Подходит для хранения драгоценностей в футлярах, документов формата А4, стандартного слитка драгоценного металла, монет из драгоценных металлов весом 1 кг и более.',
     pricePerDay: 200,
   },
   {
     id: 3,
-    sizeType: 'm',
+    sizeType: 'Большой',
+    size: 'M',
     name: 'Item 3',
     info: 'Подходит для хранения предметов коллекционирования, сумок или портфелей с документами.',
     pricePerDay: 250,
   },
   {
     id: 4,
-    sizeType: 'xl',
+    sizeType: 'Очень большой',
+    size: 'XL',
     name: 'Item 4',
     info: 'Подходит для хранения объемных предметов коллекционирования, дизайнерских изделий, шубит для хранения предметов коллекционирования, сумок или портфелей с документами.',
     pricePerDay: 250,
@@ -86,9 +90,9 @@ const SizesInfo = () => {
                 height={60}
                 width={60}
                 alt='Avatar'
-                src={getImagePath(size.sizeType)}
+                src={getImagePath(size.size)}
               ></Image>
-              <span className='ml-2'>{size.name}</span>
+              <span className='ml-2'>{size.sizeType}</span>
             </label>
           </div>
         ))}

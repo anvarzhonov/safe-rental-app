@@ -13,3 +13,9 @@ const useRegisterModal = create<RegisterModalStore>((set) => ({
 }));
 
 export default useRegisterModal;
+
+export const useAgreementModal = create<RegisterModalStore>((set) => ({
+  isOpen: false,
+  onOpen: () => set({ isOpen: true }),
+  onClose: () => set({ isOpen: false }),
+}));

@@ -12,6 +12,7 @@ import { RegisterProps, logIn } from '@/service/auth.service';
 import Heading from '../Heading';
 import Input from '../inputs/Input';
 import Modal from './Modal';
+import { renderToString } from 'react-dom/server';
 
 const LoginModal = () => {
   const router = useRouter();
@@ -47,7 +48,7 @@ const LoginModal = () => {
         loginModal.onClose();
       })
       .catch(() => {
-        // alert(error)
+        
       })
       .finally(() => {
         setIsLoading(false);

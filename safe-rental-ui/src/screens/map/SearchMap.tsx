@@ -2,10 +2,11 @@
 
 import getOffices from '@/service/map-search.service';
 import { Office } from '@/types/map-search.type';
-import { fakeResponse, officeInfoMapToWithoutSafes } from '@/utils/safe-utils';
+import { officeInfoMapToWithoutSafes } from '@/utils/safe-utils';
 import { useEffect, useRef, useState } from 'react';
 import OfficesFilter from '../../components/safes-map/filter/OfficesFilter';
 import OfficesMap from '../../components/safes-map/map/OfficesMap';
+import { toast } from 'react-hot-toast';
 
 const SearchMap = () => {
   const [offices, setOffices] = useState<Office[]>([]);
@@ -23,14 +24,14 @@ const SearchMap = () => {
         setFilteredOffices(offices);
       } else {
         setError(true);
-        alert('произошла ошибка во время загрузки офисов');
+        toast.error('Произошла ошибка во время загрузки офисов');
       }
     };
 
-    // fetchOffices();
+    fetchOffices();
     // console.log(offices)
-    setOffices(fakeResponse.offices)
-    setFilteredOffices(fakeResponse.offices)
+    // setOffices(fakeResponse.offices)
+    // setFilteredOffices(fakeResponse.offices)
   }, []);
 
   const handleFilterChange = (filteredOffices: Office[]) => {

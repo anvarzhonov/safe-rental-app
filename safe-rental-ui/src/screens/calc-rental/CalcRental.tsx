@@ -1,9 +1,14 @@
-import { useSafeRentalContext } from '@/hooks/context-hooks';
+import {
+  useCurrentUserContext,
+  useSafeRentalContext,
+} from '@/hooks/context-hooks';
 import { Button } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-hot-toast';
 import NumberOfDaysSlider from './NumberOfDaysSlider';
 import SizesInfo from './SizesInfo';
+import useLoginModal from '@/hooks/useLoginModal';
 
 const data = [
   {
@@ -29,8 +34,13 @@ const data = [
 ];
 const CalcRental = () => {
   const [pricePerDay, setPricePerDay] = useState<number[]>([]);
-  const {office, daysRental, setDaysRental, totalSum, setTotalSum} = useSafeRentalContext();
+  const { office, daysRental, setDaysRental, totalSum, setTotalSum } =
+    useSafeRentalContext();
+  const [prevUrl, setPrevUrl] = useState('');
+
   const router = useRouter();
+  const {currentUser} = useCurrentUserContext();
+  const loginModal = useLoginModal();
 
   useEffect(() => {
     const filteredData = data.filter(
@@ -41,11 +51,17 @@ const CalcRental = () => {
 
     setPricePerDay(price);
 
-    const total =
-      pricePerDay.reduce((acc, cur) => acc + cur, 100) * daysRental;
+    const total = pricePerDay.reduce((acc, cur) => acc + cur, 100) * daysRental;
 
     setTotalSum(total);
   }, [daysRental]);
+
+  useEffect(() => {
+    const previousUrl = document.referrer;
+    const path = previousUrl.substring(previousUrl.lastIndexOf('/'));
+    setPrevUrl(path);
+    console.log('Previous URL:', path);
+  }, []);
 
   const handleChange = (event: any) => {
     const selectedDays = event.target.value;
@@ -54,11 +70,15 @@ const CalcRental = () => {
 
   const handleRentButton = (event: any) => {
     event.preventDefault();
-
-    setTotalSum(totalSum);
-    setDaysRental(daysRental);
-
-    router.push('/rental-total');
+    console.log(currentUser);
+    if (currentUser !== null) {
+      setTotalSum(totalSum);
+      setDaysRental(daysRental);
+      router.push('/rental-total');
+    } else {
+      toast.error('Авторизуйтесь чтобы продолжить');
+      loginModal.onOpen();
+    }
   };
 
   return (
@@ -68,9 +88,12 @@ const CalcRental = () => {
       </div>
       <div className='flex justify-center gap-3'>
         <div className='calc-info flex w-1/2 flex-col gap-4 rounded border-x-4 border-sky-500 px-5 shadow-md'>
-          <div className='city-info'>
-            Выбранное отделение: <span className='font-bold'>{office?.address}</span>
-          </div>
+          {true === true && (
+            <div className='city-info'>
+              Выбранное отделение:{' '}
+              <span className='font-bold'>{office?.address}</span>
+            </div>
+          )}
           <NumberOfDaysSlider
             daysRental={daysRental}
             handleChange={handleChange}

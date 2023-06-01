@@ -1,4 +1,5 @@
 import jwtDecode from 'jwt-decode';
+import { toast } from 'react-hot-toast';
 import { postAPI } from './api/http-common';
 
 export type RegisterProps = {
@@ -31,6 +32,10 @@ export const setCurrentUserToken = (currentUserToken: string | null) => {
   }
 };
 
+export const getUserToken = (): string | null => {
+  return localStorage.getItem('access-token');
+}
+
 export const signOut = () =>
   new Promise<void>((resolve) => {
     setCurrentUserToken(null);
@@ -38,7 +43,7 @@ export const signOut = () =>
   });
 
 export const getCurrentUser = (): string | null => {
-  const currentUserToken = localStorage.getItem('access-token');
+  const currentUserToken = getUserToken();
   if (currentUserToken) {
     const decodedJwt = jwtDecode<any>(currentUserToken);
     if (Date.now() >= decodedJwt.exp * 1000) {
